@@ -1,23 +1,31 @@
 #!/bin/bash
 # WorkBuddy Skills 安装脚本 (macOS/Linux/Git Bash)
 #
-# 模式一：从已 clone 的本仓库目录安装
-#   bash install.sh                              # 全量安装到用户级
-#   bash install.sh global                       # 只装 global 分类
-#   bash install.sh global coding                # 装 global + coding
-#   bash install.sh --skill coding/github        # 只装单个技能
-#   bash install.sh --project global coding      # 装到项目级 .workbuddy/skills/
+# 分类说明：
+#   global       Agent 基础技能（人人必备）     — agent-self-improvement, document-skills, planning-files 等
+#   office       办公文档类                      — docx, xlsx, pptx, pdf, 周报生成 等
+#   coding       编程开发类                      — github, 代码审查, 全栈开发, 笔记搜索
+#   design       前端设计类                      — Impeccable, frontend-design-3
+#   search       搜索调研类                      — Deep Research, findskill
+#   ai-creation  AI 创作类                      — image-generation, local-whisper, yt-dlp-downloader 等
+#   custom       自定义通用技能（源自个人实践）— self-debug, req-doc-writer, 周报生成
 #
-# 模式二：从 GitHub 远程一键安装（自动 clone → 安装 → 清理）
-#   bash install.sh --clone global coding        # 远程装 global+coding 到用户级
-#   bash install.sh --clone --project global     # 远程装到项目级
-#   bash install.sh --clone                      # 远程全量安装
+# 安装到用户级 (默认)：
+#   bash install.sh                     # 全量安装（所有分类）
+#   bash install.sh global office       # 只装 global + office
+#   bash install.sh --skill coding/github  # 只装单个技能
+#
+# 安装到项目级：
+#   bash install.sh --project global office
+#
+# 远程一键安装：
+#   bash install.sh --clone global office
 
 REPO_URL="https://github.com/bitcjm/workbuddy-skills.git"
-CATEGORIES="global office coding ai-creation"
+CATEGORIES="global office coding design search ai-creation custom"
 COUNT=0
 TARGET_DIR="$HOME/.workbuddy/skills"
-INSTALL_MODE="categories"    # categories | skill
+INSTALL_MODE="categories"
 SKILL_PATH=""
 PROJECT_MODE=false
 CLONE_MODE=false
@@ -104,7 +112,6 @@ if [ "$INSTALL_MODE" = "skill" ]; then
     cp -r "$SKILL_FULL_PATH/".[!.]* "$TARGET/" 2>/dev/null
     ((COUNT++))
 
-    # 清理 clone 目录
     if [ "$CLEANUP_CLONE" = true ]; then
         echo ""
         echo "🧹 清理临时克隆目录: $CLONE_DIR"
@@ -119,6 +126,7 @@ fi
 # ── 分类安装 ──
 mkdir -p "$TARGET_DIR"
 
+# 未指定分类 → 安装全部
 if [ ${#SELECTED_CATEGORIES[@]} -eq 0 ]; then
     SELECTED_CATEGORIES=($CATEGORIES)
 fi

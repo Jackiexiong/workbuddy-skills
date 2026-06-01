@@ -34,51 +34,57 @@ WorkBuddy 的 Skills 存储在 `~/.workbuddy/skills/`（用户级全局）和各
 ```
 workbuddy-skills/
 ├── README.md                    # 仓库说明
-├── install-all.sh               # 一键安装脚本（macOS/Linux）
-├── install-all.ps1              # 一键安装脚本（Windows）
+├── install.sh                   # 一键安装脚本（macOS/Linux/Git Bash）
+├── install.ps1                  # 一键安装脚本（Windows）
 ├── make-symlinks.sh             # 符号链接模式脚本（开发时直接用）
 ├── .github/
 │   └── workflows/
 │       └── skill-validate.yml   # CI：提交时自动校验 SKILL.md 格式
 │
-├── global/                      # ← 全局通用技能（所有人必装）
-│   ├── deep-research/
-│   │   └── SKILL.md
-│   ├── web-search/
-│   │   └── SKILL.md
-│   ├── prompt-engineering/
-│   │   └── SKILL.md
-│   └── ...
+├── global/                      # ← Agent 基础技能（人人必备）
+│   ├── agent-self-improvement/
+│   ├── document-skills/
+│   ├── planning-files/
+│   ├── quack-code-review/
+│   ├── self-improving/
+│   ├── skill-scanner/
+│   └── web-search/
 │
-├── office/                      # ← 办公领域
-│   ├── docx-generation/
-│   │   └── SKILL.md
-│   ├── pptx-creation/
-│   │   └── SKILL.md
+├── office/                      # ← 办公文档领域
+│   ├── docx/
+│   ├── xlsx/
+│   ├── pptx/
+│   ├── pdf/
+│   ├── pdfkit-py/
+│   ├── obsidian/
 │   ├── 周报生成/
-│   │   └── SKILL.md
-│   └── ...
+│   ├── 业务调研报告撰写/
+│   └── 提示词工程专家/
 │
-├── stock/                       # ← 炒股/金融领域
-│   ├── stock-analysis/
-│   │   ├── SKILL.md
-│   │   └── scripts/
-│   │       └── analyzer.py
-│   └── ...
+├── coding/                         # ← 编程开发领域
+│   ├── AI交叉审查/
+│   ├── github/
+│   ├── 全栈开发/
+│   └── 笔记搜索/
 │
-├── coding/                      # ← 写代码领域
-│   ├── fullstack-dev/
-│   │   └── SKILL.md
-│   ├── code-review/
-│   │   └── SKILL.md
-│   └── ...
+├── design/                      # ← 前端设计领域
+│   ├── Impeccable（前端设计工具集）/
+│   └── frontend-design-3/
+│
+├── search/                      # ← 搜索调研领域
+│   ├── Deep Research/
+│   └── findskill/
 │
 ├── ai-creation/                 # ← AI 创作领域
+│   ├── AIHOT/
 │   ├── image-generation/
-│   │   └── SKILL.md
-│   ├── video-generation/
-│   │   └── SKILL.md
-│   └── ...
+│   ├── local-whisper/
+│   ├── yt-dlp-downloader/
+│   └── 携程问道/
+│
+├── custom/                      # ← 自定义通用（从个人库抽取）
+│   ├── self-debug/
+│   └── req-doc-writer/
 │
 └── archive/                     # ← 不再维护的旧 Skill
     └── deprecated-skill/
@@ -87,19 +93,22 @@ workbuddy-skills/
 
 ### 分文件夹的推荐策略
 
-| 领域目录 | 用途 | 示例 Skill |
-|----------|------|------------|
-| `global/` | **全局通用**，所有 WorkBuddy 用户都应安装 | web-search, skill-scanner, self-improving, findskill |
-| `office/` | **办公文档**相关 | docx/pptx/pdf 处理、周报生成、业务调研报告 |
-| `stock/` | **股票/金融**领域 | 行情查询、财报分析、技术指标计算 |
-| `coding/` | **编程开发**相关 | 全栈开发、代码审查、GitHub 管理、提示词工程 |
-| `ai-creation/` | **AI 创意**相关 | 图片生成、视频生成、3D 模型 |
-| `archive/` | **归档**，不再使用的 Skill 移到这里 | — |
+| 领域目录 | 目标用户 | 示例 Skill |
+|----------|----------|------------|
+| `global/` | **所有用户必装** | agent-self-improvement, document-skills, planning-files, quack-code-review, self-improving, skill-scanner, web-search |
+| `office/` | 文档办公用户 | docx/xlsx/pptx/pdf 处理、周报生成、业务调研报告、提示词工程 |
+| `coding/` | 程序员 | 代码审查、GitHub 管理、全栈开发、笔记搜索 |
+| `design/` | 前端开发者 | 前端设计工具集、免 AI 通用风界面 |
+| `search/` | 研究者 | 深度调研、多来源技能搜索引擎 |
+| `ai-creation/` | AI 创作者 | 图片生成、语音转文字、视频下载、旅行规划 |
+| `custom/` | 追求效率的用户 | 自我排查框架、需求文档撰写（从个人库抽取的通用技能） |
+| `archive/` | — | 不再使用的旧 Skill |
 
 > 💡 **分类原则**：
-> - 如果一个 Skill 所有人都会用到 → 放 `global/`
-> - 如果只在特定场景用 → 放对应领域目录
-> - 如果一个 Skill 跨多个领域 → 放最常用的那个领域，在 README 中备注
+> - `global/` — 每个 AI Agent 都应该有的基础能力
+> - 领域目录 — 仅在相关场景下有用，按需安装
+> - `custom/` — 源自个人实践但已提炼为通用方案，对所有人有价值
+> - 各目录技能互不重叠，每个 Skill 只属于一个分类
 
 ---
 
@@ -161,7 +170,7 @@ metadata:
 # 1. 在 GitHub 上新建仓库（略）
 
 # 2. 本地创建目录结构
-mkdir -p workbuddy-skills/{global,office,stock,coding,ai-creation,archive}
+mkdir -p workbuddy-skills/{global,office,coding,design,search,ai-creation,custom,archive}
 cd workbuddy-skills
 
 # 3. 初始化 Git 仓库
@@ -243,7 +252,7 @@ SKILLS_DIR="$(dirname "$0")"
 TARGET_DIR="$HOME/.workbuddy/skills"
 
 # 遍历所有分类目录
-for category in global office stock coding ai-creation; do
+for category in global office coding design search ai-creation custom; do
     if [ -d "$SKILLS_DIR/$category" ]; then
         for skill_dir in "$SKILLS_DIR/$category"/*/; do
             skill_name="$(basename "$skill_dir")"
@@ -264,7 +273,7 @@ Windows PowerShell 版 `install-all.ps1`：
 $SkillsDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $TargetDir = "$env:USERPROFILE\.workbuddy\skills"
 
-$categories = @("global", "office", "stock", "coding", "ai-creation")
+$categories = @("global", "office", "coding", "design", "search", "ai-creation", "custom")
 
 foreach ($cat in $categories) {
     $catPath = Join-Path $SkillsDir $cat
@@ -427,18 +436,17 @@ zip -r ~/Desktop/周报生成.zip 周报生成/
 
 ---
 
-## 七、你当前的 Skills 分类建议
-
-根据你本地已有的 Skills，建议分类如下：
+## 七、本仓库的 Skills 分类一览
 
 | 分类 | 包含 Skill |
 |------|-------------|
-| **global/ 全局通用** | web-search, findskill, skill-scanner, self-improving, agent-self-improvement, prompt-engineering-expert（提示词工程专家）, deep-research（含子 Skill）, planning-files |
-| **office/ 办公** | 业务调研报告撰写, 周报生成, document-skills（PDF/Word/Excel 处理）, obsidian |
-| **stock/ 炒股** | *（此处可创建新的炒股类 Skill）* |
-| **coding/ 编程** | fullstack-dev（全栈开发）, github, code-review, AI交叉审查, 笔记搜索 (qmd) |
-| **ai-creation/ 创** | image-generation, AIHOT, local-whisper（语音转文字）, yt-dlp-downloader, 携程问道 |
-| **archive/ 归档** | *（不再使用的放这里）* |
+| **global/ 基础必备** (6) | document-skills, planning-files, quack-code-review, self-improving, skill-scanner, web-search |
+| **office/ 办公文档** (9) | docx, xlsx, pptx, pdf, pdfkit-py, obsidian, 周报生成, 业务调研报告撰写, 提示词工程专家 |
+| **coding/ 编程开发** (4) | AI交叉审查, github, 全栈开发, 笔记搜索 |
+| **design/ 前端设计** (1) | frontend-design-3 |
+| **search/ 搜索调研** (2) | Deep Research, findskill |
+| **ai-creation/ AI 创作** (5) | AIHOT, image-generation, local-whisper, yt-dlp-downloader, 携程问道 |
+| **custom/ 自定义通用** (2) | self-debug, req-doc-writer |
 
 ---
 
@@ -448,7 +456,7 @@ zip -r ~/Desktop/周报生成.zip 周报生成/
 # 🚀 第一天：初始化
 mkdir workbuddy-skills && cd workbuddy-skills
 git init && git checkout -b main
-mkdir -p {global,office,stock,coding,ai-creation,archive}
+mkdir -p {global,office,coding,design,search,ai-creation,custom,archive}
 # 复制所有 Skill 到对应目录...
 git add . && git commit -m "init"
 git remote add origin <你的仓库URL>
@@ -473,7 +481,7 @@ powershell -File install-all.ps1  # Windows
 | 项目 | 内容 |
 |------|------|
 | **仓库名** | `workbuddy-skills` 或 `my-workbuddy-skills` |
-| **描述** | `个人 WorkBuddy Skills 集合 - 全局通用 + 办公 + 炒股 + 编程` |
+| **描述** | `WorkBuddy Skills 集合 — 基础通用 + 办公文档 + 编程开发 + 前端设计 + 搜索调研 + AI 创作 + 自定义通用` |
 | **可见性** | 私有（个人用）/ 公开（分享给社区） |
 | **README** | 直接引用本指南中的内容 |
 | **Topics** | `workbuddy`, `skills`, `ai-agent`, `codebuddy` |

@@ -1,14 +1,22 @@
 # WorkBuddy Skills 安装脚本 (Windows PowerShell)
 #
+# 分类说明：
+#   global       Agent 基础技能（人人必备）     — agent-self-improvement, document-skills, planning-files 等
+#   office       办公文档类                      — docx, xlsx, pptx, pdf, 周报生成 等
+#   coding       编程开发类                      — github, 代码审查, 全栈开发, 笔记搜索
+#   design       前端设计类                      — Impeccable, frontend-design-3
+#   search       搜索调研类                      — Deep Research, findskill
+#   ai-creation  AI 创作类                      — image-generation, local-whisper, yt-dlp-downloader 等
+#   custom       自定义通用技能（源自个人实践）— self-debug, req-doc-writer, 周报生成
+#
 # 模式一：从已 clone 的本仓库目录安装
 #   .\install.ps1                                # 全量安装到用户级
-#   .\install.ps1 global                         # 只装 global 分类
-#   .\install.ps1 global coding                  # 装 global + coding
-#   .\install.ps1 -Skill coding/github           # 只装单个技能
-#   .\install.ps1 -Project global coding         # 装到项目级 .workbuddy/skills/
+#   .\install.ps1 global office                  # 只装 global + office
+#   .\install.ps1 -Skill coding/github              # 只装单个技能
+#   .\install.ps1 -Project global office         # 装到项目级 .workbuddy/skills/
 #
 # 模式二：从 GitHub 远程一键安装（自动 clone → 安装 → 清理）
-#   .\install.ps1 -Clone global coding           # 远程装 global+coding 到用户级
+#   .\install.ps1 -Clone global office           # 远程装 global+office 到用户级
 #   .\install.ps1 -Clone -Project global         # 远程装到项目级
 #   .\install.ps1 -Clone                         # 远程全量安装
 
@@ -29,7 +37,7 @@ while ($i -lt $args.Count) {
 }
 
 $RepoUrl = "https://github.com/bitcjm/workbuddy-skills.git"
-$AllCategories = @("global", "office", "coding", "ai-creation")
+$AllCategories = @("global", "office", "coding", "design", "search", "ai-creation", "custom")
 $Count = 0
 $CleanupClone = $false
 $CloneDir = ""
