@@ -8,6 +8,7 @@
 #   search       搜索调研类                      — Deep Research, findskill
 #   ai-creation  AI 创作类                      — image-generation, local-whisper, yt-dlp-downloader 等
 #   custom       自定义通用技能（源自个人实践）— self-debug, req-doc-writer, 周报生成
+#   teacher      教师用户                          — 备课助手, 试卷生成, 学生成绩分析
 #
 # 模式一：从已 clone 的本仓库目录安装
 #   .\install.ps1                                # 全量安装到用户级
@@ -37,7 +38,7 @@ while ($i -lt $args.Count) {
 }
 
 $RepoUrl = "https://github.com/bitcjm/workbuddy-skills.git"
-$AllCategories = @("global", "office", "coding", "design", "search", "ai-creation", "custom")
+$AllCategories = @("global", "office", "coding", "design", "search", "ai-creation", "custom", "teacher")
 $Count = 0
 $CleanupClone = $false
 $CloneDir = ""

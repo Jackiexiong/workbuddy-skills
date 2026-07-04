@@ -1,0 +1,40 @@
+{
+  "skill_name": "teaching-preparation-assistant",
+  "evals": [
+    {
+      "id": 0,
+      "name": "data-structure-quicksort",
+      "prompt": "帮我备课，小节名称：快速排序。简要说明：讲清楚快排的核心思想、分区过程、代码实现和复杂度分析。大二学生，已学过数组和递归，用 Python 做代码示例。",
+      "expected_output": "一篇完整的 Markdown 教学文档，包含学习目标、前置知识（带链接）、核心概念讲解（含 Mermaid 流程图）、Python 代码实现（可运行，有注释和运行结果）、复杂度分析（含表格对比）、常见误区、动手练习、延伸阅读和小结。结构清晰，便于教师提取 PPT 素材。",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "network-tcp-handshake",
+      "prompt": "知识点：TCP 三次握手与四次挥手。学生是大三的，学过计算机网络基础。需要讲清楚为什么是三次不是两次、为什么挥手是四次、各种状态变化。用 C 语言写一个简单的 socket 示例。",
+      "expected_output": "一篇完整的教学文档，包含 Mermaid 时序图展示握手和挥手过程、状态图展示 TCP 状态转换、C 语言 socket 代码示例（有注释和编译运行说明）、对'为什么是三次/四次'的深入解释、常见误区、练习题和延伸阅读链接。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "os-virtual-memory",
+      "prompt": "小节名称：虚拟内存。内容覆盖页表机制、TLB、缺页中断、页面置换算法（FIFO、LRU）。面向大三操作系统课程学生，已学过进程管理和内存基础。",
+      "expected_output": "一篇完整的教学文档，包含学习目标、前置知识表格（带链接）、虚拟内存动机讲解、页表和 TLB 的 Mermaid 流程图、缺页中断流程图、LRU 示例推演（配图）、Python 模拟代码、常见误区、练习题、延伸阅读和小结。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "python-oop",
+      "prompt": "帮我生成一篇教学文档，小节是 Python 面向对象编程。主要讲类和对象、继承、多态、封装，还有魔术方法。学生大一刚学完 Python 基础语法。",
+      "expected_output": "一篇完整的教学文档，包含学习目标、前置知识（带链接）、从现实类比引入 OOP 概念、类和对象的代码示例、继承/多态/封装的讲解和代码、魔术方法示例、类图（Mermaid classDiagram）、常见误区、动手练习、延伸阅读和小结。代码用 Python，可运行，有注释和输出。",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "save-to-feishu",
+      "prompt": "帮我备一节关于「哈希表」的课，然后保存到飞书云文档。哈希表这节讲哈希函数、冲突解决（链地址法、开放地址法）、负载因子和扩容。大二数据结构课程学生。",
+      "expected_output": "先生成完整的 Markdown 教学文档，然后尝试使用 scripts/save_to_feishu.py 脚本将文档导入飞书。如果未配置飞书凭据，应给出配置指引并引用 references/feishu-integration.md。",
+      "files": []
+    }
+  ]
+}

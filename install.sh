@@ -9,6 +9,7 @@
 #   search       搜索调研类                      — Deep Research, findskill
 #   ai-creation  AI 创作类                      — image-generation, local-whisper, yt-dlp-downloader 等
 #   custom       自定义通用技能（源自个人实践）— self-debug, req-doc-writer, 周报生成
+#   teacher      教师用户                          — 备课助手, 试卷生成, 学生成绩分析
 #
 # 安装到用户级 (默认)：
 #   bash install.sh                     # 全量安装（所有分类）
@@ -22,7 +23,7 @@
 #   bash install.sh --clone global office
 
 REPO_URL="https://github.com/bitcjm/workbuddy-skills.git"
-CATEGORIES="global office coding design search ai-creation custom"
+CATEGORIES="global office coding design search ai-creation custom teacher"
 COUNT=0
 TARGET_DIR="$HOME/.workbuddy/skills"
 INSTALL_MODE="categories"
