@@ -1,0 +1,26 @@
+{
+  "skill_name": "course-report-grading",
+  "evals": [
+    {
+      "id": 0,
+      "name": "database-full-grading",
+      "prompt": "帮我批改数据库应用课程设计的报告。任务书在 roles/teacher/course-report-grading/task/2025-2026(1)《数据库应用课程设计》任务书.docx，学生报告在 D:/课程/数据库课设报告/ 文件夹下。",
+      "expected_output": "解析任务书提取三大题(50/30/20)具体要求和检查点，扫描学生报告文件夹，逐一读取每篇 Word 报告按三大题评分，生成成绩汇总 Excel（含成绩明细列：班级/学号/姓名/题目1/题目2/题目3/总分/等级/评语，统计摘要含五级制分布，异常清单），并输出统计摘要和常见问题Top3。",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "filename-anomaly",
+      "prompt": "学生报告文件夹里有几个文件名不规范的，比如「陈小鹏.docx」「软件2301_李四.docx」，这些应该怎么处理？",
+      "expected_output": "按 filename-conventions.md 规范校验（格式：班级_姓名_学号.docx），格式不符的文件拒绝评分并记入异常清单，说明每个文件的异常原因（如缺学号、段数不足等），正常文件继续评分。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "grade-distribution-summary",
+      "prompt": "批改完成后，帮我看看整体成绩分布怎么样，有哪些共性问题需要在课上讲？",
+      "expected_output": "输出五级制等级分布（优秀/良好/中等/及格/不及格各几人及占比）、平均分、及格率、优秀率，并聚合所有报告中的共性问题给出 Top3，配教学改进建议。",
+      "files": []
+    }
+  ]
+}
