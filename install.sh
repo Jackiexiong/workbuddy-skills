@@ -2,19 +2,18 @@
 # WorkBuddy Skills 安装脚本 (macOS/Linux/Git Bash)
 #
 # 分类说明：
-#   global       Agent 基础技能（人人必备）     — agent-self-improvement, document-skills, planning-files 等
-#   office       办公文档类                      — docx, xlsx, pptx, pdf, 周报生成 等
-#   coding       编程开发类                      — github, 代码审查, 全栈开发, 笔记搜索
-#   design       前端设计类                      — Impeccable, frontend-design-3
+#   global       Agent 基础技能（人人必备）     — document-skills, planning-files, self-improving 等
+#   office       办公文档类                      — docx, xlsx, pptx, pdf, obsidian 等
 #   search       搜索调研类                      — Deep Research, findskill
-#   ai-creation  AI 创作类                      — image-generation, local-whisper, yt-dlp-downloader 等
 #   custom       自定义通用技能（源自个人实践）— self-debug, req-doc-writer, 周报生成
-#   teacher      教师用户                          — 备课助手, 试卷生成, 学生成绩分析
+#   roles        角色型技能（按职业分组）        — roles/coding/ roles/design/ roles/ai-creation/ roles/teacher/ 等
 #
 # 安装到用户级 (默认)：
 #   bash install.sh                     # 全量安装（所有分类）
 #   bash install.sh global office       # 只装 global + office
-#   bash install.sh --skill coding/github  # 只装单个技能
+#   bash install.sh roles               # 装全部角色型技能
+#   bash install.sh roles/teacher       # 只装某个角色分类
+#   bash install.sh --skill roles/coding/github  # 只装单个技能
 #
 # 安装到项目级：
 #   bash install.sh --project global office
@@ -23,7 +22,7 @@
 #   bash install.sh --clone global office
 
 REPO_URL="https://github.com/bitcjm/workbuddy-skills.git"
-CATEGORIES="global office coding design search ai-creation custom teacher"
+CATEGORIES="global office search custom roles"
 COUNT=0
 TARGET_DIR="$HOME/.workbuddy/skills"
 INSTALL_MODE="categories"
@@ -85,7 +84,7 @@ fi
 if [ "$INSTALL_MODE" = "skill" ]; then
     if [ -z "$SKILL_PATH" ]; then
         echo "❌ 请指定技能路径，格式: --skill <分类>/<技能名>"
-        echo "   示例: --skill coding/github"
+        echo "   示例: --skill roles/coding/github"
         [ "$CLEANUP_CLONE" = true ] && rm -rf "$CLONE_DIR"
         exit 1
     fi
@@ -132,6 +131,22 @@ if [ ${#SELECTED_CATEGORIES[@]} -eq 0 ]; then
     SELECTED_CATEGORIES=($CATEGORIES)
 fi
 
+# 安装单个技能的函数
+install_skill() {
+    local skill_dir="$1"
+    local skill_name="$(basename "$skill_dir")"
+    local target="$TARGET_DIR/$skill_name"
+    mkdir -p "$target"
+    if [ "$(ls -A "$target" 2>/dev/null)" ]; then
+        echo "  🔄 更新: $skill_name"
+    else
+        echo "  📦 安装: $skill_name"
+    fi
+    cp -r "$skill_dir"* "$target/" 2>/dev/null
+    cp -r "$skill_dir".[!.]* "$target/" 2>/dev/null
+    ((COUNT++))
+}
+
 for cat in "${SELECTED_CATEGORIES[@]}"; do
     CAT_PATH="$SKILLS_DIR/$cat"
     if [ ! -d "$CAT_PATH" ]; then
@@ -140,19 +155,19 @@ for cat in "${SELECTED_CATEGORIES[@]}"; do
     fi
 
     echo "📁 [$cat]"
-    for skill_dir in "$CAT_PATH"/*/; do
-        [ -d "$skill_dir" ] || continue
-        skill_name="$(basename "$skill_dir")"
-        target="$TARGET_DIR/$skill_name"
-        mkdir -p "$target"
-        if [ "$(ls -A "$target" 2>/dev/null)" ]; then
-            echo "  🔄 更新: $skill_name"
+    # 自动适配嵌套深度：
+    #   若子目录直接含 SKILL.md → 一层结构（global/office/search/custom、roles/teacher）
+    #   否则视为角色分组 → 再遍历一层（roles/coding/github）
+    for sub_dir in "$CAT_PATH"/*/; do
+        [ -d "$sub_dir" ] || continue
+        if [ -f "${sub_dir}SKILL.md" ]; then
+            install_skill "$sub_dir"
         else
-            echo "  📦 安装: $skill_name"
+            for skill_dir in "${sub_dir}"*/; do
+                [ -d "$skill_dir" ] || continue
+                install_skill "$skill_dir"
+            done
         fi
-        cp -r "$skill_dir"* "$target/" 2>/dev/null
-        cp -r "$skill_dir".[!.]* "$target/" 2>/dev/null
-        ((COUNT++))
     done
     echo ""
 done

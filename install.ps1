@@ -1,19 +1,18 @@
 # WorkBuddy Skills 安装脚本 (Windows PowerShell)
 #
 # 分类说明：
-#   global       Agent 基础技能（人人必备）     — agent-self-improvement, document-skills, planning-files 等
-#   office       办公文档类                      — docx, xlsx, pptx, pdf, 周报生成 等
-#   coding       编程开发类                      — github, 代码审查, 全栈开发, 笔记搜索
-#   design       前端设计类                      — Impeccable, frontend-design-3
+#   global       Agent 基础技能（人人必备）     — document-skills, planning-files, self-improving 等
+#   office       办公文档类                      — docx, xlsx, pptx, pdf, obsidian 等
 #   search       搜索调研类                      — Deep Research, findskill
-#   ai-creation  AI 创作类                      — image-generation, local-whisper, yt-dlp-downloader 等
 #   custom       自定义通用技能（源自个人实践）— self-debug, req-doc-writer, 周报生成
-#   teacher      教师用户                          — 备课助手, 试卷生成, 学生成绩分析
+#   roles        角色型技能（按职业分组）        — roles/coding/ roles/design/ roles/ai-creation/ roles/teacher/ 等
 #
 # 模式一：从已 clone 的本仓库目录安装
 #   .\install.ps1                                # 全量安装到用户级
 #   .\install.ps1 global office                  # 只装 global + office
-#   .\install.ps1 -Skill coding/github              # 只装单个技能
+#   .\install.ps1 roles                          # 装全部角色型技能
+#   .\install.ps1 roles/teacher                  # 只装某个角色分类
+#   .\install.ps1 -Skill roles/coding/github     # 只装单个技能
 #   .\install.ps1 -Project global office         # 装到项目级 .workbuddy/skills/
 #
 # 模式二：从 GitHub 远程一键安装（自动 clone → 安装 → 清理）
@@ -38,7 +37,7 @@ while ($i -lt $args.Count) {
 }
 
 $RepoUrl = "https://github.com/bitcjm/workbuddy-skills.git"
-$AllCategories = @("global", "office", "coding", "design", "search", "ai-creation", "custom", "teacher")
+$AllCategories = @("global", "office", "search", "custom", "roles")
 $Count = 0
 $CleanupClone = $false
 $CloneDir = ""
@@ -122,6 +121,23 @@ if ($Categories.Count -eq 0) {
     $Categories = $AllCategories
 }
 
+# 安装单个技能的函数
+function Install-OneSkill {
+    param($SkillItem)
+    $Target = Join-Path $TargetDir $SkillItem.Name
+    if (-not (Test-Path $Target)) {
+        New-Item -ItemType Directory -Path $Target -Force | Out-Null
+    }
+    $hasContent = Get-ChildItem -Path $Target -ErrorAction SilentlyContinue
+    if ($hasContent) {
+        Write-Host "  [Update] $($SkillItem.Name)" -ForegroundColor Gray
+    } else {
+        Write-Host "  [Install] $($SkillItem.Name)" -ForegroundColor Green
+    }
+    Copy-Item -Path "$($SkillItem.FullName)\*" -Destination $Target -Recurse -Force
+    $script:Count++
+}
+
 foreach ($Cat in $Categories) {
     $CatPath = Join-Path $ScriptDir $Cat
     if (-not (Test-Path $CatPath)) {
@@ -130,20 +146,20 @@ foreach ($Cat in $Categories) {
     }
 
     Write-Host "[$Cat]" -ForegroundColor Cyan
-    $Skills = Get-ChildItem -Path $CatPath -Directory
-    foreach ($SkillItem in $Skills) {
-        $Target = Join-Path $TargetDir $SkillItem.Name
-        if (-not (Test-Path $Target)) {
-            New-Item -ItemType Directory -Path $Target -Force | Out-Null
-        }
-        $hasContent = Get-ChildItem -Path $Target -ErrorAction SilentlyContinue
-        if ($hasContent) {
-            Write-Host "  [Update] $($SkillItem.Name)" -ForegroundColor Gray
+    # 自动适配嵌套深度：
+    #   若子目录直接含 SKILL.md → 一层结构（global/office/search/custom、roles/teacher）
+    #   否则视为角色分组 → 再遍历一层（roles/coding/github）
+    $SubDirs = Get-ChildItem -Path $CatPath -Directory
+    foreach ($SubDir in $SubDirs) {
+        $SkillMdPath = Join-Path $SubDir.FullName "SKILL.md"
+        if (Test-Path $SkillMdPath) {
+            Install-OneSkill $SubDir
         } else {
-            Write-Host "  [Install] $($SkillItem.Name)" -ForegroundColor Green
+            $SkillDirs = Get-ChildItem -Path $SubDir.FullName -Directory
+            foreach ($SkillDir in $SkillDirs) {
+                Install-OneSkill $SkillDir
+            }
         }
-        Copy-Item -Path "$($SkillItem.FullName)\*" -Destination $Target -Recurse -Force
-        $Count++
     }
     Write-Host ""
 }
