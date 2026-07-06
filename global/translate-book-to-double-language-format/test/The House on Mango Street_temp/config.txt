@@ -1,8 +1,0 @@
-# Translation Configuration
-input_file=E:\Open_source_project\workbuddy-skills\global\translate-book-to-double-language-format\test\The House on Mango Street.epub
-input_lang=en
-output_lang=zh
-conversion_method=calibre_htmlz
-
-# Book Metadata
-original_title=The House on Mango Street

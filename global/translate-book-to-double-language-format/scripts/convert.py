@@ -601,8 +601,8 @@ def merge_blocks_to_chunks(blocks, target_size=6000):
             chunks.extend(sub_chunks)
             continue
 
-        # Prefer to split at heading boundaries
-        if btype == 'heading' and current_size > 0:
+        # Prefer to split at heading boundaries - but only if we have enough content
+        if btype == 'heading' and current_size > target_size * 0.6:
             flush()
 
         # Would adding this block exceed target?
@@ -685,7 +685,55 @@ def _force_split_block(text, target_size):
     return chunks
 
 
-def split_markdown_structured(md_file, temp_dir, target_size=6000):
+def analyze_content_characteristics(content):
+    """Analyze content to determine optimal chunk size and strategy.
+    
+    Returns (optimal_chunk_size, has_many_short_paragraphs)
+    """
+    lines = content.split('\n')
+    paragraph_lengths = []
+    current_para = []
+    
+    for line in lines:
+        stripped = line.strip()
+        if stripped:
+            current_para.append(line)
+        elif current_para:
+            para = '\n'.join(current_para)
+            paragraph_lengths.append(len(para))
+            current_para = []
+    
+    if current_para:
+        para = '\n'.join(current_para)
+        paragraph_lengths.append(len(para))
+    
+    if not paragraph_lengths:
+        return 12000, False
+    
+    avg_para_length = sum(paragraph_lengths) / len(paragraph_lengths)
+    num_paragraphs = len(paragraph_lengths)
+    
+    # 判断是否有很多短段落
+    has_many_short_paragraphs = avg_para_length < 300 and num_paragraphs > 200
+    
+    # 根据内容特性调整分块大小
+    if has_many_short_paragraphs:
+        # 短段落多的书：更大的分块
+        optimal = 15000
+    elif avg_para_length > 1000:
+        # 长段落的书：中等分块
+        optimal = 10000
+    else:
+        optimal = 12000
+    
+    print(f"  Content analysis: {num_paragraphs} paragraphs, avg {int(avg_para_length)} chars/para")
+    if has_many_short_paragraphs:
+        print(f"  Detected many short paragraphs - using larger chunks for efficiency")
+    
+    return optimal, has_many_short_paragraphs
+
+
+def split_markdown_structured(md_file, temp_dir, target_size=None):
     """Split markdown into structural chunks.
 
     Returns list of chunk filenames (e.g. ['chunk0001.md', ...]).
@@ -694,6 +742,11 @@ def split_markdown_structured(md_file, temp_dir, target_size=6000):
         with open(md_file, 'r', encoding='utf-8') as f:
             content = f.read()
 
+        # 智能分析并确定最佳分块大小
+        if target_size is None:
+            target_size, _ = analyze_content_characteristics(content)
+            print(f"  Using dynamic chunk size: {target_size} characters")
+        
         blocks = parse_structural_blocks(content)
         chunk_texts = merge_blocks_to_chunks(blocks, target_size)
 
@@ -815,7 +868,7 @@ def main():
     parser.add_argument("input_file", help="Input file (PDF, DOCX, or EPUB)")
     parser.add_argument("-l", "--ilang", default="auto", help="Input language (default: auto)")
     parser.add_argument("--olang", default="zh", help="Output language (default: zh)")
-    parser.add_argument("--chunk-size", type=int, default=6000, help="Target chunk size in characters (default: 6000)")
+    parser.add_argument("--chunk-size", type=int, default=12000, help="Target chunk size in characters (default: 12000)")
     parser.add_argument(
         "--temp-root",
         default=None,
