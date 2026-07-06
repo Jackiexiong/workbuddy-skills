@@ -1,0 +1,7 @@
+Sandra Cisneros was born in Chicago on December 20, 1954, the third child in a family of seven children. The only daughter of a Mexican father and a Mexican-American mother, she was educated in the Midwest before moving to the Southwest in 1984. She has worked as a teacher to high-school dropouts, a poet-in-the-schools, a college recruiter, an arts administrator, and as a visiting writer at a number of universities around the country. The recipient of numerous awards for her poetry and fiction, Cisneros is the author of The House on Mango Street (Arte Público Press, 1984/Vintage, 1991), My Wicked Wicked Ways (Third Woman 1987/Turtle Bay, 2992), Woman Hollering Creek and Other Stories (Random House, 1991/Vintage 1992), Loose Woman (Knopf, 1994), Hairs/Pelitos (Knopf, 1994), and Caramelo (Knopf, 2002). Sandra Cisneros\'s books have been translated into ten languages. In 1995 Cisneros was the recipient of a grant from the MacArthur Foundation. She lives in a purple house in San Antonio, Texas.
+
+------------------------------------------------------------------------
+
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdib3g9IjAgMCAzMjQgNTAwIiBwcmVzZXJ2ZWFzcGVjdHJhdGlvPSJub25lIj4KICAgICAgICAgICAgICAgIDxpbWFnZSB3aWR0aD0iMzI0IiBoZWlnaHQ9IjUwMCIgeGxpbms6aHJlZj0iY292ZXIuanBlZyI+PC9pbWFnZT4KICAgICAgICAgICAgPC9zdmc+)
+
+------------------------------------------------------------------------

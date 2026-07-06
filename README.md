@@ -32,9 +32,9 @@ WorkBuddy（CodeBuddy）技能集合，分**场景型**与**角色型**两大类
 
 ## 技能清单
 
-### global/ — 6 个
+### global/ — 7 个
 
-`document-skills` `planning-files` `quack-code-review` `self-improving` `skill-scanner` `web-search`
+`document-skills` `planning-files` `quack-code-review` `self-improving` `skill-scanner` `translate-book-to-double-language-format` `web-search`
 
 > agent-self-improvement 已归档（由 self-improving v1.2.16 取代）
 
