@@ -922,7 +922,10 @@ def generate_format(html_file, temp_dir, output_ext, lang_attr, cover=None):
         return None
 
     try:
-        cmd = ["python3", publish_script, html_file, "-o", output_file, "--lang", lang_attr]
+        # Try python3 first, then python on Windows
+        import sys
+        python_exe = sys.executable  # Use the same Python that's running this script
+        cmd = [python_exe, publish_script, html_file, "-o", output_file, "--lang", lang_attr]
         if cover:
             cmd.extend(["--cover", cover])
         result = subprocess.run(cmd, check=True, capture_output=True, text=True)
